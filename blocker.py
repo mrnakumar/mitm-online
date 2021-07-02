@@ -1,6 +1,5 @@
 import os
 import sys
-import threading
 import time
 import urllib.parse
 import unittest
@@ -11,45 +10,49 @@ import getpass
 import sqlite3
 
 CONFIG_FILE = ".config"
-ACTION_ALLOW = "ALLOW"
-ACTION_BLOCK = "BLOCK"
 TABLE_BROWSED = 'browsed'
 TABLE_BLOCKED = 'blocked'
 TABLE_BROWSED_CREATE = f'CREATE TABLE IF NOT EXISTS {TABLE_BROWSED} ' \
                        f'(user TEXT, url_host TEXT,full_url TEXT, accessed_on INTEGER )'
 TABLE_BLOCKED_CREATE = f'CREATE TABLE IF NOT EXISTS {TABLE_BLOCKED} ' \
                        f'(host TEXT)'
+query_select_blocked = f'SELECT DISTINCT host FROM {TABLE_BLOCKED}'
+query_insert_many = f'INSERT INTO {TABLE_BROWSED} VALUES (?, ?, ?, ?)'
 
-http_sync_interval = 10 * 60
-blocked = []
-urls = []
-browsed = []
-urls_active = threading.Lock()
-
+sync_interval = int(os.environ.get('sync_interval')) if os.environ.get('sync_interval') is not None else 10
 db_name = os.environ.get("db_name") or ":memory:"
 mode = os.environ.get("mode") or "prod"
 user = getpass.getuser()
-query_select_blocked = f'SELECT DISTINCT host FROM {TABLE_BLOCKED}'
-query_insert_many = f'INSERT INTO {TABLE_BROWSED} VALUES (?, ?, ?, ?)'
 
 
 class Blocker:
     def __init__(self, should_log):
         self.db = Database()
-        self.rules = self.db.read_blocked()
+        self.blocked = self.db.read_blocked()
+        self.browsed = {}
+        self.last_updated = time.time()
         self.should_log = should_log
         self.log_blocked()
 
     def request(self, flow):
-        if next(filter(lambda url: url in flow.request.pretty_url, self.rules), None):
+        if next(filter(lambda url: url in flow.request.pretty_url, self.blocked), None):
             flow.response = mitm_http.HTTPResponse.make(404, b"How about studying", {"Content-Type": "text/html"})
+        else:
+            self.browsed.update(flow.request.pretty_url)
+        if should_update(self.last_updated):
+            self.do_update()
 
     def done(self):
         self.db.close()
 
     def log_blocked(self):
         if self.should_log:
-            ctx.log.info("Blocked host names are: %s" % str(self.rules))
+            ctx.log.info("Blocked host names are: %s" % str(self.blocked))
+
+    def do_update(self):
+        self.db.write_browsed(self.browsed)
+        self.browsed = {}
+        self.blocked = self.db.read_blocked()
 
 
 class Database:
@@ -58,10 +61,10 @@ class Database:
         self.create_tables()
 
     def read_blocked(self):
-        host_names = []
+        host_names = {}
         cursor = self.db.cursor()
         for host in cursor.execute(query_select_blocked):
-            host_names.append(host)
+            host_names.update(host)
         cursor.close()
         return host_names
 
@@ -113,6 +116,13 @@ def to_record(url):
     return BlockedRecord(user, host, url, time.time())
 
 
+def should_update(last_updated):
+    minutes = (time.time() - last_updated) / 60
+    if minutes > sync_interval:
+        return True
+    return False
+
+
 # tests
 class TestToRecord(unittest.TestCase):
     def test_to_record(self):
@@ -147,8 +157,8 @@ class TestDBReadWrite(unittest.TestCase):
 
 # Export plugin
 should_exit = False
-mode_prod = mode is "prod"
-if mode_prod and db_name is ":memory:":
+mode_prod = mode == "prod"
+if mode_prod and db_name == ":memory:":
     ctx.log.info("Must set environment variable 'db_name'")
     should_exit = True
 if should_exit:
