@@ -44,6 +44,9 @@ class Blocker:
         if next(filter(lambda url: url in flow.request.pretty_url, self.rules), None):
             flow.response = mitm_http.HTTPResponse.make(404, b"How about studying", {"Content-Type": "text/html"})
 
+    def done(self):
+        self.db.close()
+
     def log_blocked(self):
         if self.should_log:
             ctx.log.info("Blocked host names are: %s" % str(self.rules))
@@ -80,8 +83,10 @@ class Database:
         return result
 
     def close(self):
+        print("Closing db connection...")
         self.db.commit()
         self.db.close()
+        print("Closed db connection")
 
     def create_tables(self):
         c = self.db.cursor()
@@ -131,10 +136,13 @@ class TestToRecord(unittest.TestCase):
 
 class TestDBReadWrite(unittest.TestCase):
     def test_db_read_write(self):
-        db = Database()
-        db.write_browsed(["https://youtube.com", "https://twitter.com"])
-        result = db.read_browsed()
-        self.assertListEqual(list(map(lambda r: r[0], result)), ["youtube.com", "twitter.com"])
+        try:
+            db = Database()
+            db.write_browsed(["https://youtube.com", "https://twitter.com"])
+            result = db.read_browsed()
+            self.assertListEqual(list(map(lambda r: r[0], result)), ["youtube.com", "twitter.com"])
+        finally:
+            db.close()
 
 
 # Export plugin
@@ -147,7 +155,7 @@ if should_exit:
     sys.exit("Missing environment variables for DB")
 
 addons = [
-    Blocker(mode_prod)
+    Blocker(mode_prod) if mode_prod else None
 ]
 
 if __name__ == '__main__':
