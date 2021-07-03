@@ -1,2 +1,1 @@
 pip install mitmproxy
-pip install parameterized
