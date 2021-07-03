@@ -9,7 +9,6 @@ from mitmproxy import ctx
 import getpass
 import sqlite3
 
-CONFIG_FILE = ".config"
 TABLE_BROWSED = 'browsed'
 TABLE_BLOCKED = 'blocked'
 TABLE_BROWSED_CREATE = f'CREATE TABLE IF NOT EXISTS {TABLE_BROWSED} ' \
@@ -163,10 +162,10 @@ class TestDBReadWrite(unittest.TestCase):
 should_exit = False
 mode_prod = mode == "prod"
 if mode_prod and db_name == ":memory:":
-    ctx.log.info("Must set environment variable 'db_name'")
+    ctx.log.info("Must set environment variable 'db_name' and it should not be set to ':memory:' for 'prod' mode")
     should_exit = True
 if should_exit:
-    sys.exit("Missing environment variables for DB")
+    sys.exit("Missing environment variable for DB")
 
 addons = [
     Blocker(mode_prod) if mode_prod else None
