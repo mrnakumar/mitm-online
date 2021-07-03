@@ -29,7 +29,7 @@ class Blocker:
     def __init__(self, should_log):
         self.db = Database()
         self.blocked = self.db.read_blocked()
-        self.browsed = {}
+        self.browsed = set()
         self.last_updated = time.time()
         self.should_log = should_log
         self.log_blocked()
@@ -38,7 +38,7 @@ class Blocker:
         if next(filter(lambda url: url in flow.request.pretty_url, self.blocked), None):
             flow.response = mitm_http.HTTPResponse.make(404, b"How about studying", {"Content-Type": "text/html"})
         else:
-            self.browsed.update(flow.request.pretty_url)
+            self.browsed.add(flow.request.pretty_url)
         if should_update(self.last_updated):
             self.do_update()
 
@@ -51,8 +51,9 @@ class Blocker:
 
     def do_update(self):
         self.db.write_browsed(self.browsed)
-        self.browsed = {}
+        self.browsed = set()
         self.blocked = self.db.read_blocked()
+        self.last_updated = time.time()
 
 
 class Database:
@@ -61,10 +62,12 @@ class Database:
         self.create_tables()
 
     def read_blocked(self):
-        host_names = {}
+        host_names = set()
         cursor = self.db.cursor()
-        for host in cursor.execute(query_select_blocked):
-            host_names.update(host)
+        cursor.execute(query_select_blocked)
+        for row in cursor:
+            host = row[0]
+            host_names.add(host)
         cursor.close()
         return host_names
 
@@ -80,7 +83,8 @@ class Database:
     def read_browsed(self):
         cursor = self.db.cursor()
         result = []
-        for row in cursor.execute(f'SELECT distinct url_host from {TABLE_BROWSED}'):
+        cursor.execute(f'SELECT distinct url_host from {TABLE_BROWSED}')
+        for row in cursor:
             result.append(row)
         cursor.close()
         return result
@@ -146,8 +150,8 @@ class TestToRecord(unittest.TestCase):
 
 class TestDBReadWrite(unittest.TestCase):
     def test_db_read_write(self):
+        db = Database()
         try:
-            db = Database()
             db.write_browsed(["https://youtube.com", "https://twitter.com"])
             result = db.read_browsed()
             self.assertListEqual(list(map(lambda r: r[0], result)), ["youtube.com", "twitter.com"])
