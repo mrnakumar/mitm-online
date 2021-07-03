@@ -1,5 +1,5 @@
 #### Mitm online
-A simple add-on for mitm proxy. This add-on stores the browsed urls in sqlite db along with the username and access timestamp.
+A simple add-on for mitm proxy to block certain URLs. This add-on stores the browsed urls in sqlite db along with the username and access timestamp.
 It reads the blocked URL from DB periodically as well.
 
 #### Launch
