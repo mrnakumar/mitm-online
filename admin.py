@@ -10,8 +10,8 @@ app = Flask(__name__)
 db_name = os.environ.get("db_name") or ":memory:"
 
 @app.route("/admin")
-def hello_world():
-    return render_template('admin.html')
+def get_admin_page():
+    return render_template('admin.html', hostnames = ['youtube.com', 'mrnakumar.com'])
 
 def get_db():
     if 'db' not in g:

@@ -2,7 +2,28 @@
 
 <head>
 	<title>URL Admin</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-	<h1>URLs are below:</h1>
+	<h1>Welcome Admin</h1>
+
+	<div class = "browsed_hostnames_panel">
+		<div class= "browsed_hostname_header">
+			Browsed Hostnames
+		</div>
+		{% for hostname in hostnames %}
+		    <div class = "browsed_hostname_wrapper">
+			    <div class = "browsed_hostname">
+				    {{hostname}}
+		            </div>
+			    <div class = "block_hostname_button">
+				    BLOCK
+			    </div>
+		    </div>
+		{% endfor%}
+	</div>
+<!--	<div class = "browsed_urls_panel">
+
+	</div>
+-->
 </body>
