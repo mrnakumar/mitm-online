@@ -11,7 +11,9 @@ db_name = os.environ.get("db_name") or ":memory:"
 
 @app.route("/admin")
 def get_admin_page():
-    return render_template('admin.html', hostnames = ['youtube.com', 'mrnakumar.com'])
+    hostnames = get_db().read_browsed()
+    hostnames_sorted = sorted(hostnames)
+    return render_template('admin.html', hostnames = hostnames_sorted)
 
 def get_db():
     if 'db' not in g:
