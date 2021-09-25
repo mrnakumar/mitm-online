@@ -13,6 +13,10 @@
  border: none;
 }
 
+.browsed_hostname_wrapper:hover {
+ background: darkgrey;
+}
+
 .browsed_hostname {
  display: inline-block;
  width: 75%;
@@ -25,6 +29,7 @@
   background: darkred;
   width: 20%;
   text-align: center;
+  cursor: pointer;
 }
 
 .browsed_hostname_header {
