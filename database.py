@@ -48,7 +48,7 @@ class Database:
         result = []
         cursor.execute(f'SELECT distinct url_host from {TABLE_BROWSED}')
         for row in cursor:
-            result.append(row)
+            result.append(row[0])
         cursor.close()
         return result
 
