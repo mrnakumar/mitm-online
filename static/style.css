@@ -13,6 +13,10 @@
  border: none;
 }
 
+.browsed_hostname_wrapper>form {
+ display: inline;
+}
+
 .browsed_hostname_wrapper:hover {
  background: darkgrey;
 }

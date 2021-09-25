@@ -28,9 +28,10 @@ class Database:
         cursor.close()
         return host_names
 
-    def write_blocked(self, host_names_to_block):
+    def write_blocked(self, hostnames_to_block):
         cursor = self.db.cursor()
-        cursor.executemany(execute_block_many, host_names_to_block)
+        values = map(lambda hostname: (hostname,), hostnames_to_block)
+        cursor.executemany(execute_block_many, values)
         self.db.commit()
         cursor.close()
 
