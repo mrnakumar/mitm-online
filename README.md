@@ -4,9 +4,10 @@ It reads the blocked URL from DB periodically as well.
 
 #### Launch Proxy
 Example launch from FISH shell<br/>
- 1. Install mitmproxy.</br>
- 2. Clone this repository. Assuming this repoisotory is cloned in `~/code/mitm-online`<br/>
- 3. Launch by using the following command<br/>
+ 1. Setup python virtual environment with python 3.9 or later.</br> 
+ 2. Install mitmproxy.</br>
+ 3. Clone this repository. Assuming this repoisotory is cloned in `~/code/mitm-online`<br/>
+ 4. Launch by using the following command<br/>
       `env sync_interval=1 env mode=prod env db_name="/home/fgandhi/Downloads/mitm/testdb/db.db" ./mitmdump -s ~/code/mitm-online/blocker.py`</br>
     In the above command the `./mitmdump` is the mitmdump command from mitmproxy. If the mitmdump is in system path then `mitmdubmp` can be used instead of a relative path.</br>
     The sync_interval is the duration in minutes after which the browsed URLs are inserted into DB. This is to reduce the load on DB by avoiding frequent writes.</br>
