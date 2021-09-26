@@ -43,7 +43,6 @@ class Database:
         self.db.commit()
         cursor.close()
 
-    # For testing
     def read_browsed(self):
         cursor = self.db.cursor()
         result = []
