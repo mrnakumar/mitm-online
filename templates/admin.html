@@ -13,13 +13,13 @@
 		<div class= "browsed_hostname_header">
 			Browsed Hostnames
 		</div>
-		{% for hostname in hostnames %}
+		{% for record in browsed %}
 		<div class = "browsed_hostname_wrapper">
 			<div class = "browsed_hostname">
-				{{hostname}}
+				{{record.host}}
 			</div>
 			<form action = "/block_hostname" method = "POST" id = "block_hostname_{{loop.index}}">
-				<input type = "hidden" id = "hostname" name = "hostname" value = "{{hostname}}"/>
+				<input type = "hidden" id = "hostname" name = "hostname" value = "{{record.host}}"/>
 				<div class = "block_hostname_button" onclick = "submit_form('block_hostname_{{loop.index}}');">BLOCK </div>
 			</form>
 		</div>

@@ -46,9 +46,9 @@ class Database:
     def read_browsed(self):
         cursor = self.db.cursor()
         result = []
-        cursor.execute(f'SELECT distinct url_host from {TABLE_BROWSED}')
+        cursor.execute(f'SELECT * from {TABLE_BROWSED}')
         for row in cursor:
-            result.append(row[0])
+            result.append(row)
         cursor.close()
         return result
 
