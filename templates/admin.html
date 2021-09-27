@@ -15,18 +15,30 @@
 		</div>
 		{% for record in browsed %}
 		<div class = "browsed_hostname_wrapper">
+			{% set expand_shrink_id = ["expand_shrink_span_", record.host] | join('_') %}
+			{% set browsed_urls_panel_id = ["browsed_urls_panel_", record.host] | join('_') %}
+			<div class = "expand_shrink_record"
+																id = "{{expand_shrink_id }}"
+																onclick = "showOrHideUrls('{{expand_shrink_id}}', '{{browsed_urls_panel_id}}')">+</div>
 			<div class = "browsed_hostname">
 				{{record.host}}
 			</div>
 			<form action = "/block_hostname" method = "POST" id = "block_hostname_{{loop.index}}">
 				<input type = "hidden" id = "hostname" name = "hostname" value = "{{record.host}}"/>
-				<div class = "block_hostname_button" onclick = "submit_form('block_hostname_{{loop.index}}');">BLOCK </div>
+				<span class = "block_hostname_button" onclick = "submit_form('block_hostname_{{loop.index}}');">
+					BLOCK
+				</span>
 			</form>
+			{% set browsed_urls_panel_id = ["browsed_urls_panel_", record.host] | join('_') %}
+			<div class = "browsed_urls_panel" id = "{{browsed_urls_panel_id}}">
+				{% for group in record.group %}
+				<div class = "browsed_url_wrapper">
+					<span>{{group.host}}</span>
+				</div>
+				{% endfor %}
+			  <div class = "browsed_record_separator"></div>
+			</div>
 		</div>
 		{% endfor%}
 	</div> <!-- End Browsed -->
-	<!--	<div class = "browsed_urls_panel">
-
-	 </div>
-	-->
 </body>

@@ -1,41 +1,41 @@
 .browsed_hostnames_panel {
   background: #f2f2f2;
-  width: 30%;
-  max-width: 30%;
-  max-height: 99vh;
+  width: calc(100% - 5px)%;
   padding: 5px;
-  overflow: auto;
 }
 
 .browsed_hostname_wrapper {
  display: block;
  width: 100%;
  border: none;
+ margin-top: 10px;
 }
 
 .browsed_hostname_wrapper>form {
  display: inline;
 }
 
-.browsed_hostname_wrapper:hover {
- background: darkgrey;
-}
-
 .browsed_hostname {
  display: inline-block;
- width: 75%;
+ width: calc(100% - 100px); 
  padding: 5px;
 
 }
 
 .block_hostname_button {
   display: inline-block;
-  background: darkred;
-  width: 20%;
+  background: red;
+	color: white;
+  width: 70px;
   text-align: center;
   cursor: pointer;
+	opacity: 1;
+	transition: 0.5s;
 }
 
+.block_hostname_button:hover {
+  font-weight: bold;
+}	
 .browsed_hostname_header {
  display: block;
  text-align: center;
@@ -45,4 +45,45 @@
 
 .block_button {
  border: 2px black dotted;
+}
+
+.browsed_urls_panel {
+ display: inline-block;
+ margin-left: 35px;
+ padding-left: 0; 
+ border-left: solid black 1px;
+ width: calc(100% - 40px);
+}
+
+.browsed_url_wrapper {
+ display: block;
+ width: 100%;
+ border: none;
+ padding: 5px;
+}
+
+.browsed_record_separator {
+ margin-left: 0;
+ padding-left: 0;
+ border-bottom: solid black 3px;
+}
+
+.expand_shrink_record {
+	display: inline-block;
+	width: 10px;
+	font-size: 21px;
+	font-weight: bold;
+	color: blue;
+	opacity = 0.5;
+	transition: 0.5s;
+  cursor: pointer;
+}
+
+.expand_shrink_record:hover {
+	opacity: 0.8;
+	color: green;
+}
+
+.display-none {
+	display: none !important;
 }
