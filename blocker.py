@@ -24,7 +24,7 @@ class Blocker:
 
     def request(self, flow):
         if next(filter(lambda url: url in flow.request.pretty_url, self.blocked), None):
-            flow.response = mitm_http.HTTPResponse.make(404, b"How about studying", {"Content-Type": "text/html"})
+            flow.response = mitm_http.Response.make(404, b"How about studying", {"Content-Type": "text/html"})
         else:
             self.browsed.add(flow.request.pretty_url)
         if should_update(self.last_updated):
