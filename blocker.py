@@ -6,13 +6,11 @@ import unittest
 import database
 from mitmproxy import http as mitm_http
 from mitmproxy import ctx
-import getpass
 import os
 
 sync_interval = int(os.environ.get('sync_interval')) if os.environ.get('sync_interval') is not None else 10
 db_name = os.environ.get("db_name") or ":memory:"
 mode = os.environ.get("mode") or "prod"
-user = getpass.getuser()
 
 
 class Blocker:
@@ -46,21 +44,6 @@ class Blocker:
         self.last_updated = time.time()
 
 
-class BlockedRecord:
-    def __init__(self, user_name, host, url, accessed_on):
-        self.user = user_name
-        self.host = host
-        self.url = url
-        self.accessed_on = accessed_on
-
-
-def to_record(url):
-    if url is None:
-        return None
-    host = urllib.parse.urlparse(url).netloc
-    if host == '':
-        return None
-    return BlockedRecord(user, host, url, time.time())
 
 
 def should_update(last_updated):
@@ -71,26 +54,6 @@ def should_update(last_updated):
 
 
 # tests
-class TestToRecord(unittest.TestCase):
-    def test_to_record(self):
-        cases = [
-            ["https://www.mrnakumar.com", True, "www.mrnakumar.com"],
-            ["https://mrnakumar.com", True, "mrnakumar.com"],
-            ["https://m.youtube.com", True, "m.youtube.com"],
-            ["https://dev.twitter.com", True, "dev.twitter.com"],
-            ["https:///www.mrnakumar.com", False, "www.mrnakumar.com"],
-            ["", False, ""],
-            [None, False, None]
-        ]
-        for url, success, host in cases:
-            result = to_record(url)
-            if success is False:
-                self.assertIsNone(result)
-            else:
-                self.assertEqual(result.host, host)
-                self.assertEqual(result.url, url)
-
-
 class TestDBReadWrite(unittest.TestCase):
     def test_db_read_write(self):
         db = Database()

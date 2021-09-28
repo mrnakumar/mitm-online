@@ -33,7 +33,9 @@
 			<div class = "browsed_urls_panel" id = "{{browsed_urls_panel_id}}">
 				{% for group in record.group %}
 				<div class = "browsed_url_wrapper">
-					<span>{{group.host}}</span>
+					<span>{{group.url}}</span>
+					<span>&nbsp;|&nbsp;</span>
+					<span>{{group.accessed_on}}</span>
 				</div>
 				{% endfor %}
 			  <div class = "browsed_record_separator"></div>

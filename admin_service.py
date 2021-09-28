@@ -8,7 +8,7 @@ class DatabaseService:
         not_blocked  = filter(lambda e: e.host not in blocked, browsed)
         result = []
         for key , group in groupby(sorted(not_blocked, key = lambda e: e.host), lambda e: e.host):
-            result.append(BrowsedByHost(key, list(group)))
+            result.append(BrowsedByHost(key, sorted(list(group), key = lambda e: e.accessed_on, reverse=True)))
         return render_template('admin.html', browsed = result)
 
     def block_hostname(self, db, hostname):

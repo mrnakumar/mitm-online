@@ -1,5 +1,9 @@
+from models import BlockedRecord
 import os
 import sqlite3
+import time
+import urllib.parse
+import getpass
 
 TABLE_BROWSED = 'browsed'
 TABLE_BLOCKED = 'blocked'
@@ -11,7 +15,7 @@ query_select_blocked = f'SELECT DISTINCT host FROM {TABLE_BLOCKED}'
 query_insert_many = f'INSERT INTO {TABLE_BROWSED} VALUES (?, ?, ?, ?)'
 execute_block_many = f'INSERT INTO {TABLE_BLOCKED} VALUES (?)'
 db_name = os.environ.get("db_name") or ":memory:"
-
+user = getpass.getuser()
 
 class Database:
     def __init__(self, db_name):
@@ -37,7 +41,7 @@ class Database:
 
     def write_browsed(self, browsed_urls):
         to_insert = map(lambda r: (r.user, r.host, r.url, r.accessed_on),
-                        filter(lambda x: x is not None, list(map(to_record, browsed_urls))))
+                        filter(lambda x: x is not None, list(map(self.to_record, browsed_urls))))
         cursor = self.db.cursor()
         cursor.executemany(query_insert_many, to_insert)
         self.db.commit()
@@ -65,3 +69,11 @@ class Database:
         c.execute(TABLE_BROWSED_CREATE)
         self.db.commit()
         c.close()
+
+    def to_record(self, url):
+        if url is None:
+            return None
+        host = urllib.parse.urlparse(url).netloc
+        if host == '':
+            return None
+        return BlockedRecord(user, host, url, time.time())
