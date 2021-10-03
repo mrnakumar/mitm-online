@@ -22,6 +22,13 @@ def block_hostname():
     admin_service.block_hostname(db, hostname_to_block)
     return redirect(url_for('get_admin_page'), 303)
 
+@app.route("/ignore_hostname", methods= ["POST"])
+def ignore_hostname():
+    hostname_to_ignore = request.form['hostname']
+    db = get_db()
+    admin_service.ignore_hostname(db, hostname_to_ignore)
+    return redirect(url_for('get_admin_page'), 303)
+
 def get_db():
     if 'db' not in g:
         g.db = database.Database(db_name)

@@ -17,7 +17,7 @@
 
 .browsed_hostname {
  display: inline-block;
- width: calc(100% - 100px); 
+ width: calc(100% - 200px);
  padding: 5px;
 
 }
@@ -25,7 +25,7 @@
 .block_hostname_button {
   display: inline-block;
   background: red;
-	color: white;
+  color: white;
   width: 70px;
   text-align: center;
   cursor: pointer;
@@ -35,7 +35,23 @@
 
 .block_hostname_button:hover {
   font-weight: bold;
+}
+
+.ignore_hostname_button {
+  display: inline-block;
+  background: grey;
+	color: white;
+  width: 70px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 1;
+  transition: 0.5s;
+}
+
+.ignore_hostname_button:hover {
+  font-weight: bold;
 }	
+
 .browsed_hostname_header {
  display: block;
  text-align: center;
