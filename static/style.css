@@ -107,7 +107,13 @@
 .navbar {
  font-size: 20px;
  padding: 10px;
+ padding-bottom: 20px;
  height: 30px;
+ position: sticky;
+ top: 0;
+ z-index: 100;
+ opacity: 1;
+ background: white;
 }
 
 .navbar a{
