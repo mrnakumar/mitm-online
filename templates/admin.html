@@ -1,11 +1,9 @@
 <!doctype html>
 
-<head>
-	<title>URL Admin</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-	<script type="text/javascript" src="{{url_for('static', filename='admin.js')}}"></script>
-</head>
+{% include "header.html" %}
+
 <body>
+  {% include "navbar.html" %}
 	<h1>Welcome Admin</h1>
 
 	<!-- Browsed-->

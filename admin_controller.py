@@ -11,7 +11,7 @@ app = Flask(__name__)
 db_name = os.environ.get("db_name") or ":memory:"
 admin_service = admin_service.DatabaseService()
 
-@app.route("/admin")
+@app.route("/browsed")
 def get_admin_page():
     return admin_service.render_admin_page(get_db())
 
