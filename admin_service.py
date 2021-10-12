@@ -1,12 +1,13 @@
 from itertools import groupby
 from flask import render_template
+from datetime import datetime
 
 class DatabaseService:
     def render_admin_page(self, db):
         browsed = map(lambda row: Browsed(*row), self.get_browsed_hostnames(db))
         blocked = db.read_blocked()
         ignored = db.read_ignored()
-        not_blocked_not_ignored  = filter(lambda e: (e.host not in blocked) and (e.host not in ignored), browsed)
+        not_blocked_not_ignored  = map(timestamp_to_datetime, filter(lambda e: (e.host not in blocked) and (e.host not in ignored), browsed))
         result = []
         for key , group in groupby(sorted(not_blocked_not_ignored, key = lambda e: e.host), lambda e: e.host):
             result.append(BrowsedByHost(key, sorted(list(group), key = lambda e: e.accessed_on, reverse=True)))
@@ -34,3 +35,7 @@ class BrowsedByHost:
     def __init__(self, host, group):
         self.host = host
         self.group = group
+
+def timestamp_to_datetime(browsed):
+    accessed_on = datetime.utcfromtimestamp(browsed.accessed_on).strftime('%Y-%m-%d %H:%M:%S')
+    return Browsed(browsed.user, browsed.host, browsed.url, accessed_on)

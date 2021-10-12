@@ -37,7 +37,7 @@
 			<div class = "browsed_urls_panel" id = "{{browsed_urls_panel_id}}">
 				{% for group in record.group %}
 				<div class = "browsed_url_wrapper">
-					<span>{{group.url}}</span>
+					<span><a target="_blank" rel="noopener noreferrer" href = "{{group.url}}">{{group.url}}</a></span>
 					<span>&nbsp;|&nbsp;</span>
 					<span>{{group.accessed_on}}</span>
 				</div>
