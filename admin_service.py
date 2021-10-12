@@ -10,7 +10,7 @@ class DatabaseService:
         result = []
         for key , group in groupby(sorted(not_blocked_not_ignored, key = lambda e: e.host), lambda e: e.host):
             result.append(BrowsedByHost(key, sorted(list(group), key = lambda e: e.accessed_on, reverse=True)))
-        return render_template('admin.html', browsed = result)
+        return render_template('browsed.html', browsed = result)
 
     def block_hostname(self, db, hostname):
         db.write_blocked([hostname,])
