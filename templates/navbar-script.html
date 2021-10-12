@@ -1,0 +1,30 @@
+<script type = "text/javascript">
+	const browsed = 'navbar-browsed';
+  const blocked = 'navbar-blocked';
+  const home = 'navbar-home';
+  function updateStyle(selected) {
+	  const navbarItems = [browsed, blocked, home];
+	  navbarItems.forEach(item => {
+		  let itemObject = document.getElementById(item);
+		  if(item === selected) {
+			  itemObject.style.textDecoration= 'underline';
+		  } else {
+			  itemObject.style.textDecoration = null;
+		  }
+	  });
+	}
+  (function(){
+	  const path = window.location.pathname;
+	  let selected;
+	  if(path === '/browsed') {
+		  selected = browsed;
+	  } else if ('/blocked') {
+		  selected  = blocked;
+	  } else if ('/') {
+		  selected = home;
+	  } else {
+		  console.error('Unknown navbar item selected');
+	  }
+		updateStyle(selected);
+})();
+</script>
