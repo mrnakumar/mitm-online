@@ -5,22 +5,23 @@
 <body>
   {% include "navbar.html" %}
 	<!-- Browsed-->
-	<div class = "browsed_hostnames_panel">
-		<div class= "browsed_hostname_header">
+	<div class = "hostnames_panel">
+		<div class= "hostname_header">
 			Browsed Hostnames
 		</div>
 		{% for record in browsed %}
-		<div class = "browsed_hostname_wrapper">
+		<div class = "hostname_wrapper">
 			{% set expand_shrink_id = ["expand_shrink_span_", record.host] | join('_') %}
 			{% set browsed_urls_panel_id = ["browsed_urls_panel_", record.host] | join('_') %}
 			<div class = "expand_shrink_record"
 																id = "{{expand_shrink_id }}"
 																onclick = "showOrHideUrls('{{expand_shrink_id}}', '{{browsed_urls_panel_id}}')">+</div>
-			<div class = "browsed_hostname">
+			<div class = "hostname">
 				{{record.host}}
 			</div>
 			<form action = "/ignore_hostname" method = "POST" id = "ignore_hostname_{{loop.index}}">
 				<input type = "hidden" id = "hostname" name = "hostname" value = "{{record.host}}"/>
+				<input type = "hidden" id = "from" name = "from" value = "browsed"/>
 				<span class = "ignore_hostname_button" onclick = "submit_form('ignore_hostname_{{loop.index}}');">
 					IGNORE
 				</span>

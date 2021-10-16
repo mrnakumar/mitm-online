@@ -1,0 +1,35 @@
+
+<!doctype html>
+
+{% include "header.html" %}
+
+<body>
+  {% include "navbar.html" %}
+	<!-- Blocked -->
+	<div class = "hostnames_panel">
+		<div class= "hostname_header">
+			Blocked Hostnames
+		</div>
+		{% for host in blocked %}
+		<div class = "hostname_wrapper">
+			<div class = "hostname">
+				{{host}}
+			</div>
+			<form action = "/ignore_hostname" method = "POST" id = "ignore_hostname_{{loop.index}}">
+				<input type = "hidden" id = "hostname" name = "hostname" value = "{{host}}"/>
+				<input type = "hidden" id = "from" name = "from" value = "blocked"/>
+				<span class = "ignore_hostname_button" onclick = "submit_form('ignore_hostname_{{loop.index}}');">
+					IGNORE
+				</span>
+			</form>
+			<form action = "/unblock_hostname" method = "POST" id = "unblock_hostname_{{loop.index}}">
+				<input type = "hidden" id = "hostname" name = "hostname" value = "{{host}}"/>
+				<span class = "unblock_hostname_button" onclick = "submit_form('unblock_hostname_{{loop.index}}');">
+					UNBLOCK
+				</span>
+			</form>
+		</div>
+		{% endfor%}
+	</div> <!-- End Blocked -->
+  {% include "navbar-script.html" %}
+</body>
