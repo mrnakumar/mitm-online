@@ -15,20 +15,25 @@ admin_service = admin_service.DatabaseService()
 def home():
     return render_template('home.html')
 
+@app.route("/blocked")
+def blocked():
+    return admin_service.get_blocked(get_db())
+
 @app.route("/browsed")
 def browsed():
     return admin_service.get_browsed(get_db())
 
-@app.route("/blocked")
-def blocked():
-    return admin_service.get_blocked(get_db())
+@app.route("/ignored")
+def ignored():
+    return admin_service.get_ignored(get_db())
 
 @app.route("/block_hostname", methods = ["POST"])
 def block_hostname():
     hostname_to_block = request.form['hostname']
     db = get_db()
+    target = get_target(request)
     admin_service.block_hostname(db, hostname_to_block)
-    return redirect(url_for('browsed'), 303)
+    return redirect(url_for(target), 303)
 
 @app.route("/unblock_hostname", methods = ["POST"])
 def unblock_hostname():
@@ -40,12 +45,23 @@ def unblock_hostname():
 @app.route("/ignore_hostname", methods= ["POST"])
 def ignore_hostname():
     hostname_to_ignore = request.form['hostname']
-    origin = request.form.get('from')
-    if origin not in ['browsed', 'blocked']:
-        origin = 'browsed'
     db = get_db()
+    target = get_target(request)
     admin_service.ignore_hostname(db, hostname_to_ignore)
-    return redirect(url_for(origin), 303)
+    return redirect(url_for(target), 303)
+
+@app.route("/unignore_hostname", methods = ["POST"])
+def unignore_hostname():
+    hostname_to_unignore = request.form['hostname']
+    db = get_db()
+    admin_service.unignore_hostname(db, hostname_to_unignore)
+    return redirect(url_for('ignored'), 303)
+
+def get_target(request):
+    target = request.form.get('from')
+    if target not in ['blocked', 'browsed', 'ignored']:
+        target = 'home'
+    return target
 
 def get_db():
     if 'db' not in g:

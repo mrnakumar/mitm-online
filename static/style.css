@@ -67,7 +67,23 @@
 
 .ignore_hostname_button:hover {
   font-weight: bold;
-}	
+}
+
+.unignore_hostname_button {
+  display: inline-block;
+  background: grey;
+  color: white;
+  width: 92px;
+  min-width: fit-content;
+  text-align: center;
+  cursor: pointer;
+  opacity: 1;
+  transition: 0.5s;
+}
+
+.unignore_hostname_button:hover {
+  font-weight: bold;
+}
 
 .hostname_header {
  display: block;
@@ -83,7 +99,7 @@
 .browsed_urls_panel {
  display: inline-block;
  margin-left: 35px;
- padding-left: 0; 
+ padding-left: 0;
  border-left: solid black 1px;
  width: calc(100% - 40px);
 }

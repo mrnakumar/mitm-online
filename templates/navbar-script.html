@@ -1,9 +1,10 @@
 <script type = "text/javascript">
-	const browsed = 'navbar-browsed';
   const blocked = 'navbar-blocked';
+	const browsed = 'navbar-browsed';
   const home = 'navbar-home';
+  const ignored = 'navbar-ignored';
   function updateStyle(selected) {
-	  const navbarItems = [browsed, blocked, home];
+	  const navbarItems = [blocked, browsed, home, ignored];
 	  navbarItems.forEach(item => {
 		  let itemObject = document.getElementById(item);
 		  if(item === selected) {
@@ -16,11 +17,13 @@
   (function(){
 	  const path = window.location.pathname;
 	  let selected;
-	  if(path === '/browsed') {
-		  selected = browsed;
-	  } else if ('/blocked') {
-		  selected  = blocked;
-	  } else if ('/') {
+	  if(path === '/blocked') {
+		  selected = blocked;
+	  } else if (path === '/browsed') {
+		  selected  = browsed;
+		} else if(path === '/ignored'){
+			selected = ignored;
+		} else if (path === '/') {
 		  selected = home;
 	  } else {
 		  console.error('Unknown navbar item selected');

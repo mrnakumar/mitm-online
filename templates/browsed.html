@@ -28,6 +28,7 @@
 			</form>
 			<form action = "/block_hostname" method = "POST" id = "block_hostname_{{loop.index}}">
 				<input type = "hidden" id = "hostname" name = "hostname" value = "{{record.host}}"/>
+				<input type = "hidden" id = "from" name = "from" value = "browsed"/>
 				<span class = "block_hostname_button" onclick = "submit_form('block_hostname_{{loop.index}}');">
 					BLOCK
 				</span>

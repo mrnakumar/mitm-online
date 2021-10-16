@@ -15,9 +15,13 @@ class DatabaseService:
 
     def get_blocked(self, db):
         blocked = db.read_blocked()
-        ignored = db.read_ignored()
-        result = sorted(filter(lambda hostname: hostname not in ignored, blocked))
+        result = sorted(blocked)
         return render_template('blocked.html', blocked = result)
+
+    def get_ignored(self, db):
+        ignored = db.read_ignored()
+        result = sorted(ignored)
+        return render_template('ignored.html', ignored = result)
 
     def block_hostname(self, db, hostname):
         db.write_blocked([hostname,])

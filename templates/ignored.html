@@ -1,0 +1,34 @@
+<!doctype html>
+
+{% include "header.html" %}
+
+<body>
+  {% include "navbar.html" %}
+	<div class = "hostnames_panel">
+		<div class= "hostname_header">
+			Ignored Hostnames
+		</div>
+		{% for host in ignored %}
+		<div class = "hostname_wrapper">
+			<div class = "hostname">
+				{{host}}
+			</div>
+			<form action = "/unignore_hostname" method = "POST" id = "unignore_hostname_{{loop.index}}">
+				<input type = "hidden" id = "hostname" name = "hostname" value = "{{host}}"/>
+				<input type = "hidden" id = "from" name = "from" value = "ignored"/>
+				<span class = "unignore_hostname_button" onclick = "submit_form('unignore_hostname_{{loop.index}}');">
+					UNIGNORE
+				</span>
+			</form>
+			<form action = "/block_hostname" method = "POST" id = "block_hostname_{{loop.index}}">
+				<input type = "hidden" id = "hostname" name = "hostname" value = "{{host}}"/>
+				<input type = "hidden" id = "from" name = "from" value = "ignored"/>
+				<span class = "block_hostname_button" onclick = "submit_form('block_hostname_{{loop.index}}');">
+					BLOCK
+				</span>
+			</form>
+		</div>
+		{% endfor%}
+	</div>
+  {% include "navbar-script.html" %}
+</body>
