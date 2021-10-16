@@ -13,13 +13,13 @@ TABLE_BROWSED_CREATE = f'CREATE TABLE IF NOT EXISTS {TABLE_BROWSED} ' \
 TABLE_BLOCKED_CREATE = f'CREATE TABLE IF NOT EXISTS {TABLE_BLOCKED} ' \
                        f'(host TEXT, UNIQUE(host))'
 TABLE_IGNORED_CREATE = f'CREATE TABLE IF NOT EXISTS {TABLE_IGNORED} ' \
-                       f'(host TEXT)'
+                       f'(host TEXT, UNIQUE(host))'
 query_select_blocked = f'SELECT DISTINCT host FROM {TABLE_BLOCKED}'
 query_select_ignored = f'SELECT DISTINCT host FROM {TABLE_IGNORED}'
 query_insert_many = f'INSERT INTO {TABLE_BROWSED} VALUES (?, ?, ?, ?)'
 execute_block_many = f'INSERT OR IGNORE INTO {TABLE_BLOCKED} VALUES (?)'
 execute_unblock_many = f'DELETE FROM {TABLE_BLOCKED} WHERE host IN (?)'
-execute_ignore_many = f'INSERT INTO {TABLE_IGNORED} VALUES (?)'
+execute_ignore_many = f'INSERT OR IGNORE INTO {TABLE_IGNORED} VALUES (?)'
 execute_unignore_many = f'DELETE FROM {TABLE_IGNORED} WHERE host IN (?)'
 db_name = os.environ.get("db_name") or ":memory:"
 user = getpass.getuser()
