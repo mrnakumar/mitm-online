@@ -28,3 +28,6 @@ To block/unblock certain hostnames, the admin UI should be used.
  2. Run the app by using the following command:</br>
      `env db_name="~/file.db" flask run`</br>
     In the above command flag `db_name` should be set to the same db file that is used by the Proxy.
+
+#### Authentication
+The admin user must be created manually in database directly using SHELL access. No web UI/API is available to create user.
