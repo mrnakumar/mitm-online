@@ -5,6 +5,7 @@ class BlockedRecord:
         self.url = url
         self.accessed_on = accessed_on
 
+
 class User:
     def __init__(self, uid, password):
         self.id = uid
@@ -12,7 +13,6 @@ class User:
         self._authenticated = uid is not None
         self._is_active = uid is not None
         self._is_anonymous = uid is None
-
 
     @property
     def is_authenticated(self):
