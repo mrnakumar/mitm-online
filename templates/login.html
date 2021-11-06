@@ -1,8 +1,13 @@
+<!doctype html>
+
+{% include "header.html" %}
 <body>
-	<form target = "/login" method="POST">
-		<p> Login </p>
-		<input id = "user_id" name="user_id" type= "text" placeholder = "Your name"></input>
-		<input id = "password" name="password" type= "text" placeholder = "Your password"></input>
-		<button type = "submit"> Login</button>
-	</form>
+	<div class = "login_form">
+		<form target = "/login" method="POST">
+			<div class = "login_header"> Please enter login details below: </div>
+			<input id = "user_id" name="user_id" type= "text" placeholder = "Your name"></input>
+			<input id = "password" name="password" type= "text" placeholder = "Your password"></input>
+			<button class = "login_button" type = "submit"> Login</button>
+		</form>
+	</div>
 </body>

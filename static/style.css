@@ -164,3 +164,34 @@
   opacity: 0.8;
 	color: green;
 }
+
+.login_form {
+  padding: 20px;
+}
+
+.login_form input {
+  height: 30px;
+	padding: 5px;
+	width: 300px;
+	display: block;
+	margin-bottom: 10px;
+	border: 1px ridge rgba(170, 50, 220, .6);
+}
+
+.login_button {
+ display: block;
+ width: 100px;
+ font-size: 16px;
+ height: 30px;
+ border: 1px ridge rgba(170, 50, 220, .6);
+}
+
+.login_button:hover {
+	font-size: 18px;
+}
+
+.login_header {
+ display: block;
+ font-size: 20px;
+ margin-bottom: 10px;
+}
